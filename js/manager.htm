@@ -1,0 +1,190 @@
+<!--{panel}-->
+<div class='hd'>Блокнот</div>
+<div class='bd'>
+	<div id="{i#widget}"></div>
+</div>
+
+<!--{widget}-->
+<div class="mod-note-manager">
+
+	<table style="width: 100%"><tbody><tr>
+		<td>
+			<div id="{i#notes}"></div>
+		</td>
+		<td>
+			<div id="{i#records}"></div>
+		</td>
+	</tr></tbody></table>
+
+</div>
+
+<!--{notes}-->
+<div style="width: 200px;">
+	<div style="margin: 3px 0 2px 10px;" class="right">
+		<a id="{i#bappend}" href="#">Добавить блокнот</a>
+	</div>
+	<div id="{i#table}" style="border:1px solid #CBCBCB; height: 360px; overflow-y: scroll">
+		<div id="{i#list}"></div>
+	</div>
+</div>
+
+<!--{notewait}-->
+<div style="padding: 5px;">
+	<img src="/images/loading.gif" />Идет загрузка...
+</div>
+
+<!--{notetable}-->
+<div style="padding: 5px;">
+	<table style="width: 100%;"><tbody>{v#rows}</tbody></table>
+</div>
+
+<!--{noteitemdef}-->Базовый
+
+<!--{noterow}-->
+<tr style="border-bottom: 1px solid #CBCBCB;">
+	<td><div style="margin: 4px 0;">{v#tl}</div></td>
+	<td>
+		<div style="margin: 4px 0;">
+			<img id="{i#bedit}-{v#id}" src="/modules/note/images/i-edit.gif" style="cursor: pointer; display: {v#ded};" />
+		</div>
+	</td>
+	<td>
+		<div style="margin: 4px 0;">
+			<img id="{i#bremove}-{v#id}" src="/modules/note/images/i-remove.gif" style="cursor: pointer; display: {v#drem};" />
+		</div>
+	</td>
+</tr>
+
+<!--{notetl}-->
+<a id="{i#bsel}-{v#id}" href="#">{v#tl}</a>
+
+<!--{notetlsel}-->
+<strong style="font-weight: bolder;">{v#tl}</strong>
+
+<!--{noteeditpanel}-->
+<div class='hd'>Блокнот</div>
+<div class='bd'>
+	<div class="field">
+		<p>
+			Название: 
+			<input id="{i#tl}" style="width: 200px;" value="" type="text"/>
+		</p>
+		
+		<p>&nbsp;</p>
+		
+		<div class="buttons right" id="{i#buttons}">
+			<input id="{i#bsave}" type="button" value="Сохранить" class="btn" /> 
+			<input id="{i#bappend}" type="button" value="Добавить" class="btn" /> 
+			<input id="{i#bcancel}" type="button" value="Отмена" class="btn" />
+		</div>
+		<div id="{i#loading}" class="buttons right" style="display: none">
+			<img src="/images/loading_line.gif" />
+		</div>
+	</div>
+</div>
+
+<!--{noteremovepanel}-->
+<div class='hd'>Удаление блокнота</div>
+<div class='bd'>
+	<div class="field">
+		<p>
+			Вы действительно хотите удалить блокнот "<strong>{v#tl}</strong>" и все записи находящиеся в нем?
+		</p>
+		
+		<p>&nbsp;</p>
+		
+		<div class="buttons right" id="{i#buttons}">
+			<input id="{i#bremove}" type="button" value="Удалить" class="btn" /> 
+			<input id="{i#bcancel}" type="button" value="Отмена" class="btn" />
+		</div>
+	</div>
+</div>
+
+
+<!--{records}-->
+<div style="width: 570px; margin-left: 5px;">
+	<table style="width: 100%"><tbody><tr>
+		<td>
+			<div style="margin: 3px 0 2px 10px;">
+				<span id="{i#print}">{v#print}</span>
+				<span style="margin-left: 20px;">
+					<a href="#" id="{i#waitsave}" style="color: white; background-color: red; display: none;">Сохраняю...</a>
+					<a href="#" id="{i#waitremove}" style="color: white; background-color: red; display: none;">Удаляю...</a>
+				</span>
+			</div>
+		</td>
+		<td>
+			<div class="buttons right">
+				<input type="button" id="{i#bappendold}" class="btn" value="Добавить запись" style="display: none;"/>
+				<a id="{i#bappend}" href="#">Добавить запись</a>
+			</div>
+		</td>
+	</tr></tbody></table>
+	<div id="{i#table}" style="border:1px solid #CBCBCB; height: 360px; overflow-y: scroll">
+		<div id="{i#editor}"></div>
+		<div id="{i#list}"><img src="/images/loading.gif" />Идет загрузка записей. Пожалуйста, подождите...</div>
+	</div>
+</div>
+
+<!--{editor}-->
+<div style="margin: 7px">
+	<div id="{i#editor}">
+		<div class="buttons right" style="display: none">
+			<input type="button" id="{i#bsave}" class="btn" value="Сохранить" />
+			<input type="button" id="{i#bsaveclose}" class="btn" value="Сохранить и закрыть редактор" />
+			<input type="button" id="{i#bcancel}" class="btn" value="Отмена" />
+		</div>
+		<textarea id="{i#id}" style="width: 495px; height: 250px;"></textarea>
+	</div>
+	
+	<div id="{i#save}" style="display: none">
+		<div id="{i#savetext}" style="margin: 5px;"></div>
+		<div><img src="/images/loading.gif" />Сохраняю...</div>
+	</div>
+</div>
+
+<!--{record}-->
+<div id="{i#id}" class="note" style="overflow: hidden; display: none;">
+	<div style="width: 550px;">
+		<div style="border: 1px solid #CBCBCB; margin: 5px; overflow: hidden">
+			<div class="menu">
+				<table style="width: 100%"><tbody><tr>
+					<td>
+						<span>Создана </span>
+						<span id="{i#tmdl}">{v#tmdl}</span>
+						 • 
+						<span>Изменена </span>
+						<span id="{i#tmde}">{v#tmde}</span>
+					</td>
+					<td style="width: 150px; text-align: right;">
+						<div id="{i#menubtns}" style="text-align: right;">
+							<span id="{i#print}">{v#print}</span>
+							<a id="{i#bedit}" href="#">Изменить</a>
+							<a id="{i#bedithide}" href="#" style="display: none;">Свернуть&nbsp;редактор</a>
+							<a id="{i#bremove}" href="#">Удалить</a>
+						</div>
+						<div id="{i#dlgremovebtns}" style="display: none; text-align: right;">
+							<a id="{i#bremoveyes}" href="#">Удалить?</a>
+							<a id="{i#bremovecancel}" href="#">Отмена</a>
+						</div>
+						<div id="{i#removewait}" style="display: none; text-align: right;">
+							<img src="/images/loading.gif" />Удаляю...
+						</div>
+					</td>
+				</tr></tbody></table>
+			</div>
+			<div id="{i#saveerror}" style="color: red; display: none;">Внимание! Произошла ошибка сохранения текста. Возможно отсутствует связь с сервером. </div>
+			<div id="{i#viewer}">
+				<table><tbody><tr>
+					<td>
+						<img id="{i#imgexp}" style="margin: 5px 0 0 5px; cursor: pointer; width: 12px; height: 12px" src="/modules/note/images/exp-plus.gif" />
+					</td>
+					<td>
+						<div id="{i#message}" class="csp" style="padding: 5px;">{v#msg}</div>
+					</td>
+				</tr></tbody></table>
+			</div>
+			<div id="{i#editor}" style="display: none"></div>
+		</div>
+	</div>
+</div>
