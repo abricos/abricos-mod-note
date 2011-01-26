@@ -22,8 +22,8 @@ Component.entryPoint = function(){
 	
 	NS.roles.load = function(callback){
 		Brick.Permission.load(function(){
-			NS.roles['isAdmin'] = Brick.Permission.check('eprice', '50') == 1;
-			NS.roles['isWrite'] = Brick.Permission.check('eprice', '30') == 1;
+			NS.roles['isAdmin'] = Brick.Permission.check('note', '50') == 1;
+			NS.roles['isWrite'] = Brick.Permission.check('note', '30') == 1;
 			callback();
 		});
 	};		
