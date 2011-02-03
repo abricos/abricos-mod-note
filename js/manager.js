@@ -194,10 +194,12 @@ Component.entryPoint = function(){
 				Dom.replaceClass(el, 'exp', 'csp');
 				elImg.src = "/modules/note/images/exp-plus.gif";
 				el.innerHTML = strip(nt.msg);
+				Dom.removeClass(el, 'aw-page-content');
 			}else{
 				Dom.replaceClass(el, 'csp', 'exp');
 				elImg.src = "/modules/note/images/exp-minus.gif";
 				el.innerHTML = nt.msg;
+				Dom.addClass(el, 'aw-page-content');
 			}
 			this.isExpand = !this.isExpand;
 		},
