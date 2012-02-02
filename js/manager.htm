@@ -1,14 +1,19 @@
 <!--{panel}-->
 <div class='hd'>Блокнот</div>
-<div class='bd'>
-	<div id="{i#widget}"></div>
+<div class='bd aw-note'>
+	<div id="{i#loading}" class="loading">
+		<img src="/images/loading.gif" />
+		Идет загрузка. Пожалуйста, подождите...
+	</div>
+	
+	<div id="{i#widget}" ></div>
 </div>
 
 <!--{widget}-->
 <div class="mod-note-manager">
 
 	<table style="width: 100%"><tbody><tr>
-		<td>
+		<td style="width: 205px;">
 			<div id="{i#notes}"></div>
 		</td>
 		<td>

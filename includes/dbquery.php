@@ -10,7 +10,7 @@
 
 class NoteQuery {
 
-	public static function NoteList(CMSDatabase $db, $userid){
+	public static function NoteList(Ab_Database $db, $userid){
 		$sql = "
 			SELECT 
 				noteid as id,
@@ -21,7 +21,7 @@ class NoteQuery {
 		return $db->query_read($sql);
 	}
 	
-	public static function Note(CMSDatabase $db, $userid, $noteid, $retarray = false){
+	public static function Note(Ab_Database $db, $userid, $noteid, $retarray = false){
 		$sql = "
 			SELECT 
 				noteid as id,
@@ -32,7 +32,7 @@ class NoteQuery {
 		return $retarray ? $db->query_first($sql) : $db->query_read($sql);
 	}
 	
-	public static function NoteAppend(CMSDatabase $db, $userid, $d){
+	public static function NoteAppend(Ab_Database $db, $userid, $d){
 		$sql = "
 			INSERT INTO ".$db->prefix."nt_note (userid, title, dateline) VALUES (
 				".bkint($userid).",
@@ -44,7 +44,7 @@ class NoteQuery {
 		return $db->insert_id();
 	}
 	
-	public static function NoteUpdate(CMSDatabase $db, $userid, $d){
+	public static function NoteUpdate(Ab_Database $db, $userid, $d){
 		$sql = "
 			UPDATE ".$db->prefix."nt_note
 			SET title='".bkstr($d->tl)."'
@@ -53,7 +53,7 @@ class NoteQuery {
 		$db->query_write($sql);
 	}
 	
-	public static function NoteRemove(CMSDatabase $db, $userid, $noteid){
+	public static function NoteRemove(Ab_Database $db, $userid, $noteid){
 		$sql = "
 			UPDATE ".$db->prefix."nt_note
 			SET deldate=".TIMENOW."
@@ -62,7 +62,7 @@ class NoteQuery {
 		$db->query_write($sql);
 	}
 	
-	public static function Record(CMSDatabase $db, $userid, $recordid, $retarray = false){
+	public static function Record(Ab_Database $db, $userid, $recordid, $retarray = false){
 		$sql = "
 			SELECT 
 				recordid as id,
@@ -77,7 +77,7 @@ class NoteQuery {
 		return $retarray ? $db->query_first($sql) :  $db->query_read($sql);
 	}
 	
-	public static function RecordList(CMSDatabase $db, $userid, $forPrint = false, $recordid = 0, $noteid = 0){
+	public static function RecordList(Ab_Database $db, $userid, $forPrint = false, $recordid = 0, $noteid = 0){
 		$sql = "
 			SELECT 
 				recordid as id,
@@ -95,7 +95,7 @@ class NoteQuery {
 		return $db->query_read($sql);
 	}
 	
-	public static function RecordAppend(CMSDatabase $db, $userid, $noteid, $message){
+	public static function RecordAppend(Ab_Database $db, $userid, $noteid, $message){
 		
 		$sql = "
 			INSERT INTO ".$db->prefix."nt_record (userid, noteid, message, dateline, dateedit) VALUES (
@@ -110,7 +110,7 @@ class NoteQuery {
 		return $db->insert_id();
 	}
 	
-	public static function RecordUpdate(CMSDatabase $db, $userid, $recordid, $message) {
+	public static function RecordUpdate(Ab_Database $db, $userid, $recordid, $message) {
 		$sql = "
 			UPDATE ".$db->prefix."nt_record
 			SET message='".bkstr($message)."',
@@ -120,7 +120,7 @@ class NoteQuery {
 		$db->query_write($sql);
 	}
 	
-	public static function RecordRemove(CMSDatabase $db, $userid, $recordid){
+	public static function RecordRemove(Ab_Database $db, $userid, $recordid){
 		$sql = "
 			UPDATE ".$db->prefix."nt_record
 			SET deldate=".TIMENOW."

@@ -577,11 +577,10 @@ Component.entryPoint = function(){
 		
 		NoteEditPanel.superclass.constructor.call(this, {
 			fixedcenter: true,
-			modal: true,
 			overflow: false
 		});
 	};
-	YAHOO.extend(NoteEditPanel, Brick.widget.Panel, {
+	YAHOO.extend(NoteEditPanel, Brick.widget.Dialog, {
 		initTemplate: function(){
 			buildTemplate(this, 'noteeditpanel');
 			return this._TM.replace('noteeditpanel');
@@ -685,7 +684,16 @@ Component.entryPoint = function(){
 			return this._TM.replace('panel');
 		},
 		onLoad: function(){
-			this.widget = new NotepadWidget(this._TM.getEl('panel.widget'));
+			var __self = this;
+			NS.roles.load(function(){
+				__self._onLoadRoles();
+			});
+		},
+		_onLoadRoles: function(){
+			var TM = this._TM;
+			Dom.setStyle(TM.getEl('panel.loading'), 'display', 'none');
+			
+			this.widget = new NotepadWidget(TM.getEl('panel.widget'));
 			NS.data.request();
 		},
 		onClick: function(el){
@@ -705,10 +713,12 @@ Component.entryPoint = function(){
 	});
 	NS.NotepadPanel = NotepadPanel;
 	
-	API.showNotepadPanel = function(){
-		NS.roles.load(function(){
-			new NotepadPanel();
-		});
+	var activePanel = null;
+	NS.API.showNotepadPanel = function(){
+		if (L.isNull(activePanel) || activePanel.isDestroy()){
+			activePanel = new NotepadPanel();
+		}
+		return activePanel;
 	};
 	
 };

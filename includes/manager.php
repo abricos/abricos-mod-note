@@ -10,7 +10,7 @@
 
 require_once 'dbquery.php';
 
-class NoteManager extends ModuleManager {
+class NoteManager extends Ab_ModuleManager {
 	
 	/**
 	 * 
@@ -18,20 +18,10 @@ class NoteManager extends ModuleManager {
 	 */
 	public $module = null;
 	
-	/**
-	 * User
-	 * @var User
-	 */
-	public $user = null;
-	public $userid = 0;
-	
 	private $_disableRoles = false;
 	
-	public function NoteManager(NoteModule $module){
-		parent::ModuleManager($module);
-		
-		$this->user = CMSRegistry::$instance->modules->GetModule('user');
-		$this->userid = $this->user->info['userid'];
+	public function __construct(NoteModule $module){
+		parent::__construct($module);
 	}
 	
 	public function DisableRole(){
@@ -39,11 +29,11 @@ class NoteManager extends ModuleManager {
 	}
 	
 	public function IsAdminRole(){
-		return $this->module->permission->CheckAction(NoteAction::ADMIN) > 0;
+		return $this->IsRoleEnable(NoteAction::ADMIN);
 	}
 	
 	public function IsWriteRole(){
-		return $this->module->permission->CheckAction(NoteAction::WRITE) > 0;
+		return $this->IsRoleEnable(NoteAction::WRITE);
 	}
 	
 	public function DSProcess($name, $rows){
@@ -119,7 +109,7 @@ class NoteManager extends ModuleManager {
 	}
 	
 	private function RecordTextClear($note){
-		$utmanager = CMSRegistry::$instance->GetUserTextManager();
+		$utmanager = Abricos::TextParser();
 		$note->msg = $utmanager->Parser($note->msg);
 	}
 	

@@ -8,15 +8,13 @@
  * @author Alexander Kuzmin (roosit@abricos.org)
  */
 
-$mod = new NoteModule();
-CMSRegistry::$instance->modules->Register($mod);
 
-class NoteModule extends CMSModule {
+class NoteModule extends Ab_Module {
 	
 	private $_manager;
 	
 	function __construct(){
-		$this->version = "0.1.0.1";
+		$this->version = "0.1.2";
 		$this->name = "note";
 		
 		$this->permission = new NotePermission($this);
@@ -42,15 +40,18 @@ class NoteAction {
 	const ADMIN			= 50;
 }
 
-class NotePermission extends AbricosPermission {
+class NotePermission extends Ab_UserPermission {
 	
 	public function NotePermission(NoteModule $module){
 		$defRoles = array(
 
-			new AbricosRole(NoteAction::WRITE, UserGroup::REGISTERED),
-			new AbricosRole(NoteAction::WRITE, UserGroup::ADMIN),
+			new Ab_UserRole(NoteAction::VIEW, Ab_UserGroup::REGISTERED),
+			new Ab_UserRole(NoteAction::VIEW, Ab_UserGroup::ADMIN),
+		
+			new Ab_UserRole(NoteAction::WRITE, Ab_UserGroup::REGISTERED),
+			new Ab_UserRole(NoteAction::WRITE, Ab_UserGroup::ADMIN),
 			
-			new AbricosRole(NoteAction::ADMIN, UserGroup::ADMIN)
+			new Ab_UserRole(NoteAction::ADMIN, Ab_UserGroup::ADMIN)
 		);
 		parent::__construct($module, $defRoles);
 	}
@@ -63,6 +64,5 @@ class NotePermission extends AbricosPermission {
 		);
 	}
 }
-
-
+Abricos::ModuleRegister(new NoteModule());
 ?>
