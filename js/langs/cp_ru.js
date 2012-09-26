@@ -1,6 +1,6 @@
-Brick.util.Language.add('ru',{'mod':{'note': {
+Brick.util.Language.add('ru',{'mod': {'{C#MODNAME}':{
 	'title': 'Блокнот',
-	'roles':{
+	'roles': {
 		'30': 'Запись',
 		'50': 'Администрирование'
 	}

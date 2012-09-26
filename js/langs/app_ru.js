@@ -1,5 +1,5 @@
-Brick.util.Language.add('ru',{'mod': {'note':{
-	'app':{
+Brick.util.Language.add('ru',{'mod': {'{C#MODNAME}':{
+	'app': {
 		'title': 'Блокнот'
 	}
 }}});

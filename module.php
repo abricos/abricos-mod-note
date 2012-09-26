@@ -3,9 +3,8 @@
  * @version $Id$
  * @package Abricos
  * @subpackage Note
- * @copyright Copyright (C) 2008 Abricos. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * @author Alexander Kuzmin (roosit@abricos.org)
+ * @author Alexander Kuzmin <roosit@abricos.org>
  */
 
 
@@ -14,7 +13,7 @@ class NoteModule extends Ab_Module {
 	private $_manager;
 	
 	function __construct(){
-		$this->version = "0.1.2";
+		$this->version = "0.1.3";
 		$this->name = "note";
 		
 		$this->permission = new NotePermission($this);
