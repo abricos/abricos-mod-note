@@ -81,11 +81,9 @@ Component.entryPoint = function(){
 			var Editor = Brick.widget.Editor;
 			__self.editor = new Editor(TId['editor']['id'], {
 				'mode': Editor.MODE_VISUAL,
-				'toolbar': Editor.TOOLBAR_MINIMAL
+				'toolbar': Editor.TOOLBAR_MINIMAL,
+				'toolbarExpert': false
 			});
-			__self.editor._buttons['tb_full'].hide();
-			__self.editor._buttons['tb_standart'].hide();
-			__self.editor._buttons['tb_minimal'].hide();
 		},
 		destroy: function(){
 			this.editor.destroy();
