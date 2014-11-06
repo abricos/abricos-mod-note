@@ -1,6 +1,11 @@
 <?php
 return array(
     "title" => "Блокнот",
+    'roles' => array(
+        '10' => 'Чтение',
+        '30' => 'Запись',
+        '50' => 'Администрирование'
+    ),
     'brick' => array(
         'printlist' => array(
             "1" => "Блокнот",
