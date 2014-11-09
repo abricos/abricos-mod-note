@@ -10,14 +10,17 @@ Component.requires = {
 	yahoo: ['dom'],
 	mod:[
 		{name: 'sys', files: ['data.js', 'container.js']},
-        {name: 'export', files: ['lib.js']},
-        {name: 'note', files: ['roles.js']}
-        
+        {name: 'export', files: ['lib.js']}
 	]
 };
-Component.entryPoint = function(){
-	
-	var Dom = YAHOO.util.Dom,
+Component.entryPoint = function(NS){
+
+    NS.roles = new Brick.AppRoles('{C#MODNAME}', {
+        isAdmin: 50,
+        isWrite: 30
+    });
+
+    var Dom = YAHOO.util.Dom,
 		E = YAHOO.util.Event,
 		L = YAHOO.lang;
 	

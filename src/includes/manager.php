@@ -165,6 +165,19 @@ class NoteManager extends Ab_ModuleManager {
 			"list" => $list
 		)); 
 	}
+
+    public function Bos_MenuData() {
+        $i18n = $this->module->GetI18n();
+        return array(
+            array(
+                "name" => "note",
+                "title" => $i18n['title'],
+                "role" => NoteAction::WRITE,
+                "icon" => "/modules/note/images/app_icon.gif",
+                "url" => "note/manager/showNotepadPanel"
+            )
+        );
+    }
 }
 
 ?>

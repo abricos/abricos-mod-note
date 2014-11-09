@@ -30,6 +30,15 @@ class NoteModule extends Ab_Module {
 		}
 		return $this->_manager;
 	}
+
+    /**
+     * This module added menu item in BOS Panel
+     *
+     * @return bool
+     */
+    public function Bos_IsMenu() {
+        return true;
+    }
 }
 
 class NoteAction {
