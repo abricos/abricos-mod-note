@@ -18,14 +18,8 @@ class NoteManager extends Ab_ModuleManager {
 	 */
 	public $module = null;
 	
-	private $_disableRoles = false;
-	
 	public function __construct(NoteModule $module){
 		parent::__construct($module);
-	}
-	
-	public function DisableRole(){
-		$this->_disableRoles = true; 
 	}
 	
 	public function IsAdminRole(){
@@ -37,9 +31,6 @@ class NoteManager extends Ab_ModuleManager {
 	}
 	
 	public function DSProcess($name, $rows){
-		$p = $rows->p;
-		$db = $this->db;
-		
 		switch ($name){
 			case 'notes':
 				foreach ($rows->r as $r){
@@ -52,7 +43,6 @@ class NoteManager extends Ab_ModuleManager {
 	}
 	
 	public function DSGetData($name, $rows){
-		$p = $rows->p;
 		switch ($name){
 			case 'notes': return $this->NoteList();
 			case 'records': return $this->RecordList();
@@ -173,7 +163,7 @@ class NoteManager extends Ab_ModuleManager {
                 "name" => "note",
                 "title" => $i18n['title'],
                 "role" => NoteAction::WRITE,
-                "icon" => "/modules/note/images/app_icon.gif",
+                "icon" => "/modules/note/images/note-24.png",
                 "url" => "note/manager/showNotepadPanel"
             )
         );
