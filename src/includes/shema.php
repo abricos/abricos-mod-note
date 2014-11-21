@@ -18,23 +18,7 @@ $pfx = $db->prefix;
 if ($updateManager->isInstall()){
 
 	Abricos::GetModule('note')->permission->Install();
-	
-	/*
-	$db->query_write("
-		CREATE TABLE IF NOT EXISTS ".$pfx."nt_note (
-		  `noteid` int(10) unsigned NOT NULL auto_increment COMMENT 'Идентификатор',
-		  `userid` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Идентификатор пользователя',
-		  `message` TEXT NOT NULL COMMENT 'Сообщение',
-		  `comment` TEXT NOT NULL COMMENT 'Комментарий',
-		  `statusid` int(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Статус: 0-без статуса, 1-низкий, ..., 5-высокий',
-		  `owner` varchar(10) NOT NULL DEFAULT '' COMMENT 'Имя модуля основателя записи',
-		  `dateline` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Дата добавления записи',
-		  `dateedit` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Дата изменения записи',
-		  `deldate` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'Дата удаления',
-		  PRIMARY KEY  (`noteid`)
-		)".$charset
-	);
-	/**/
+
 }
 
 if ($updateManager->isUpdate('0.1.0.1')){
