@@ -14,6 +14,7 @@ Component.entryPoint = function(NS){
         onInitAppWidget: function(err, appInstance){
             this.set('waiting', true);
             appInstance.noteList(this.renderNoteList, this);
+            this.set('selected', 0);
         },
         destructor: function(){
             this.closeEditor();
@@ -25,13 +26,47 @@ Component.entryPoint = function(NS){
                 return;
             }
             var tp = this.template,
-                lst = "";
+                lst = tp.replace('row', {
+                    id: 0,
+                    title: this.language.get('baseTitle')
+                });
 
             noteList.each(function(note){
                 lst += tp.replace('row', note.toJSON());
             }, this);
 
             tp.setHTML('list', tp.replace('list', {'rows': lst}));
+        },
+        _getRowNode: function(elName, id){
+            var tp = this.template,
+                rowId = tp.gelid('row.' + elName),
+                rowNode = Y.Node.one('#' + rowId + '-' + id);
+            return rowNode;
+        },
+        _selectRow: function(id, isSelect){
+            var rowNode = this._getRowNode('row', id);
+            if (!rowNode){
+                return;
+            }
+            if (isSelect){
+                rowNode.addClass('active');
+            } else {
+                rowNode.removeClass('active');
+            }
+        },
+        _selectedSetter: function(val){
+            var appInstance = this.get('appInstance');
+            if (!appInstance){
+                return val;
+            }
+
+            this._selectRow(0, val === 0);
+
+            appInstance.get('noteList').each(function(note){
+                this._selectRow(note.get('id'), note.get('id') === val);
+            }, this);
+
+            return val;
         },
         showEditor: function(noteid){
             noteid = noteid | 0;
@@ -85,12 +120,18 @@ Component.entryPoint = function(NS){
         ATTRS: {
             component: {value: COMPONENT},
             templateBlockName: {value: 'widget,list,row,editor'},
-            selectedNoteId: {
-                validator: Y.Lang.isBoolean,
-                value: 0
+            selected: {
+                validator: Y.Lang.isNumber,
+                setter: '_selectedSetter'
             }
         },
         CLICKS: {
+            select: {
+                event: function(e){
+                    var noteid = e.defineTarget.getData('id') | 0;
+                    this.set('selected', noteid);
+                }
+            },
             showEditor: {
                 event: function(e){
                     var noteid = e.defineTarget.getData('id') | 0;
