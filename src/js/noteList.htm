@@ -1,0 +1,50 @@
+<!--{widget}-->
+<div class="noteList panel panel-default">
+    <div class="panel-heading">
+        Список блокнотов
+        <div class="pull-right" data-wait="show">
+            <img src="/images/loading.gif" />
+        </div>
+    </div>
+    <div class="panel-body">
+        <div id="{i#list}"></div>
+    </div>
+</div>
+
+<!--{list}-->
+<div class="list-group">
+    <a href="#" data-click="select" data-id="0" class="list-group-item active">
+        Базовый
+    </a>
+    {v#rows}
+    <div class="list-group-item">
+        <div id="{i#buttons}" class="text-center">
+            <a data-click="showEditor" href="#">
+                <i class="fa fa-plus-circle"></i> Добавить блокнот
+            </a>
+        </div>
+        <div id="{i#editor}"></div>
+    </div>
+</div>
+
+<!--{row}-->
+<a href="#" data-click="select" data-id="{i#id}" class="list-group-item">
+    {v#title}
+    <div class="{i#editor}-{v#id}"></div>
+</a>
+
+<!--{editor}-->
+<div class="input-group">
+    <input id="{i#title}" type="text" class="form-control"/>
+    <span data-click="save" class="input-group-addon" data-wait="hide"
+          title="Сохранить">
+        <i class="fa fa-floppy-o"></i>
+    </span>
+    <span data-click="cancel" class="input-group-addon" data-wait="hide"
+          title="Отмена">
+        <i class="fa fa-ban"></i>
+    </span>
+    <span class="input-group-addon" data-wait="show">
+        <img src="/images/loading.gif"/>
+    </span>
+</div>

@@ -1,0 +1,25 @@
+{
+  "version": "0.1.0",
+  "type": "model",
+  "fields": {
+    "id": {
+      "type": "int"
+    },
+    "parentid": {
+      "type": "int",
+      "json": "pid"
+    },
+    "userid": {
+      "type": "int",
+      "json": "uid"
+    },
+    "title": {
+      "type": "string",
+      "json": "tl"
+    },
+    "dateline": {
+      "type": "int",
+      "json": "dl"
+    }
+  }
+}

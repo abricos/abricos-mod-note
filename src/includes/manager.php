@@ -29,132 +29,22 @@ class NoteManager extends Ab_ModuleManager {
         return $this->IsRoleEnable(NoteAction::WRITE);
     }
 
-    public function DSProcess($name, $rows){
-        switch ($name){
-            case 'notes':
-                foreach ($rows->r as $r){
-                    if ($r->f == 'a'){
-                        $this->NoteAppend($r->d);
-                    }
-                    if ($r->f == 'u'){
-                        $this->NoteUpdate($r->d);
-                    }
-                    if ($r->f == 'd'){
-                        $this->NoteRemove($r->d->id);
-                    }
-                }
-                return;
-        }
-    }
+    private $_note = null;
 
-    public function DSGetData($name, $rows){
-        switch ($name){
-            case 'notes':
-                return $this->NoteList();
-            case 'records':
-                return $this->RecordList();
+    /**
+     * @return Note
+     */
+    public function GetNote(){
+        if (!is_null($this->_note)){
+            return $this->_note;
         }
+        require_once 'classes/note.php';
+        $this->_note = new Note($this);
+        return $this->_note;
     }
 
     public function AJAX($d){
-        switch ($d->do){
-            case "recordsave":
-                return $this->RecordSave($d->record);
-            case "recordremove":
-                return $this->RecordRemove($d->recordid);
-        }
-        return null;
-    }
-
-    public function NoteList(){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        return NoteQuery::NoteList($this->db, $this->userid);
-    }
-
-    public function NoteAppend($d){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        return NoteQuery::NoteAppend($this->db, $this->userid, $d);
-    }
-
-    public function NoteUpdate($d){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        NoteQuery::NoteUpdate($this->db, $this->userid, $d);
-    }
-
-    public function NoteRemove($noteid){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        NoteQuery::NoteRemove($this->db, $this->userid, $noteid);
-    }
-
-    public function RecordList($forPrint = false, $recordid = 0, $noteid = 0){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        return NoteQuery::RecordList($this->db, $this->userid, $forPrint, $recordid, $noteid);
-    }
-
-    public function Record($recordid){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        return NoteQuery::Record($this->db, $this->userid, $recordid, true);
-    }
-
-    public function RecordSave($note){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        $note->id = intval($note->id);
-        if ($note->id > 0){
-            $this->RecordUpdate($note);
-        } else {
-            $note->id = $this->RecordAppend($note);
-        }
-        return $this->Record($note->id);
-    }
-
-    private function RecordTextClear($note){
-        $utmanager = Abricos::TextParser();
-        $note->msg = $utmanager->Parser($note->msg);
-    }
-
-    public function RecordAppend($note){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        $this->RecordTextClear($note);
-        $recordid = intval($note->nid);
-        if ($recordid > 0){
-            $row = NoteQuery::Note($this->db, $this->userid, $recordid, true);
-            if (empty($row)){
-                // блокнот не пренадлежит этому пользователю
-                return;
-            }
-        }
-        return NoteQuery::RecordAppend($this->db, $this->userid, $recordid, $note->msg);
-    }
-
-    public function RecordUpdate($note){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        $this->RecordTextClear($note);
-        NoteQuery::RecordUpdate($this->db, $this->userid, $note->id, $note->msg);
-    }
-
-    public function RecordRemove($recordid){
-        if (!$this->IsWriteRole()){
-            return;
-        }
-        NoteQuery::RecordRemove($this->db, $this->userid, $recordid);
+        return $this->GetNote()->AJAX($d);
     }
 
     public function ExportToPrinter($page, $params){
@@ -188,14 +78,16 @@ class NoteManager extends Ab_ModuleManager {
     }
 
     public function Bos_MenuData(){
-        $i18n = $this->module->GetI18n();
+        if (!$this->IsWriteRole()){
+            return null;
+        }
+        $i18n = $this->module->I18n();
         return array(
             array(
                 "name" => "note",
-                "title" => $i18n['title'],
-                "role" => NoteAction::WRITE,
+                "title" => $i18n->Translate('title'),
                 "icon" => "/modules/note/images/note-24.png",
-                "url" => "note/manager/showNotepadPanel"
+                "url" => "note/wspace/ws"
             )
         );
     }

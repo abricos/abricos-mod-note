@@ -1,0 +1,28 @@
+{
+  "version": "0.1.0",
+  "type": "model",
+  "fields": {
+    "id": {
+      "type": "int"
+    },
+    "noteid": {
+      "type": "int"
+    },
+    "userid": {
+      "type": "int",
+      "json": "uid"
+    },
+    "message": {
+      "type": "string",
+      "json": "tl"
+    },
+    "dateline": {
+      "type": "int",
+      "json": "dl"
+    },
+    "upddate": {
+      "type": "int",
+      "json": "upd"
+    }
+  }
+}
