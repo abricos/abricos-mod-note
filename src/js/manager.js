@@ -31,6 +31,9 @@ Component.entryPoint = function(NS){
             this.noteListWidget = new NS.NoteListWidget({
                 srcNode: tp.gel('noteList')
             });
+            this.noteListWidget.on('selectedChange', function(e){
+                this.recordListWidget.set('noteid', e.newVal);
+            }, this);
             this.recordListWidget = new NS.RecordListWidget({
                 srcNode: tp.gel('recordList')
             });

@@ -26,9 +26,19 @@ Component.entryPoint = function(NS){
             this._widgets = [];
             this.set('waiting', true);
             appInstance.recordList(this.renderRecordList, this);
+
+            this.after('noteidChange', this.renderRecordList, this);
         },
         destructor: function(){
             this.closeEditor();
+            this._destroyList();
+        },
+        _destroyList: function(){
+            var ws = this._widgets;
+            for (var i = 0; i < ws.length; i++){
+                ws[i].destroy();
+            }
+            this._widgets = [];
         },
         renderRecordList: function(){
             this.set('waiting', false);
@@ -36,17 +46,22 @@ Component.entryPoint = function(NS){
             if (!recordList){
                 return;
             }
+            this._destroyList();
             recordList.each(this._renderRecord, this);
         },
         _renderRecord: function(record){
             var appInstance = this.get('appInstance'),
                 tp = this.template,
-                ws = this._widgets;
+                ws = this._widgets,
+                noteid = this.get('noteid');
 
             if (!record){
                 record = new NS.Record({
-                    appInstance: appInstance
+                    appInstance: appInstance,
+                    noteid: noteid
                 });
+            } else if (record.get('noteid') !== this.get('noteid')){
+                return;
             }
 
             var div = Y.Node.create('<div></div>');
@@ -65,6 +80,7 @@ Component.entryPoint = function(NS){
         ATTRS: {
             component: {value: COMPONENT},
             templateBlockName: {value: 'widget'},
+            noteid: {value: 0}
         },
         CLICKS: {
             createRecord: 'createRecord'
@@ -110,7 +126,7 @@ Component.entryPoint = function(NS){
 
             tp.toggleView(true, 'actionButtons,editorPanel', 'editorButtons,viewerPanel');
 
-            tp.setHTML('messageEditor', record.get('message'));
+            tp.setValue('messageEditor', record.get('message'));
 
             // hack tinymce width
             messageNode.set('offsetWidth', messageNode.get('offsetWidth'));
@@ -122,13 +138,38 @@ Component.entryPoint = function(NS){
                 'toolbarExpert': false
             });
         },
-        closeEditor: function(){
-            if (!this._visualEditor){
-                return;
-            }
-            this._visualEditor.destroy();
+        showRemove: function(){
+            this.collapse();
+
             var tp = this.template;
-            tp.toggleView(false, 'actionButtons,editorPanel', 'editorButtons,viewerPanel');
+
+            this._actionWidget = new NS.RecordListWidget.RemoveWidget({
+                srcNode: tp.append('action', '<div></div>'),
+                CLICKS: {
+                    remove: {event: this.remove, context: this},
+                    cancel: {event: this.closeEditor, context: this}
+                }
+            });
+        },
+        closeEditor: function(){
+            if (this._actionWidget){
+                this._actionWidget.destroy();
+                delete this._actionWidget;
+            }
+            if (this._visualEditor){
+                this._visualEditor.destroy();
+                delete this._visualEditor;
+                var tp = this.template;
+                tp.toggleView(false, 'actionButtons,editorPanel', 'editorButtons,viewerPanel');
+            }
+        },
+        expand: function(){
+            this.set('isExpand', true);
+            this.renderRecord();
+        },
+        collapse: function(){
+            this.set('isExpand', false);
+            this.renderRecord();
         },
         save: function(){
             var editor = this._visualEditor;
@@ -150,13 +191,20 @@ Component.entryPoint = function(NS){
                 }
             }, this);
         },
-        expand: function(){
-            this.set('isExpand', true);
-            this.renderRecord();
-        },
-        collapse: function(){
-            this.set('isExpand', false);
-            this.renderRecord();
+        remove: function(){
+            if (this.get('waiting')){
+                return;
+            }
+            var record = this.get('record');
+
+            this.set('waiting', true)
+            this.get('appInstance').recordRemove(record.get('id'), function(err, result){
+                this.set('waiting', false)
+                this.closeEditor();
+                if (!err){
+                    this.destroy();
+                }
+            }, this);
         }
     }, {
         ATTRS: {
@@ -174,7 +222,6 @@ Component.entryPoint = function(NS){
             collapse: 'collapse'
         }
     });
-
 
     NS.RecordListWidget.RemoveWidget = Y.Base.create('removeWidget', SYS.AppWidget, [], {}, {
         ATTRS: {
