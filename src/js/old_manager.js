@@ -46,16 +46,6 @@ Component.entryPoint = function(NS){
         return pl.getHTML();
     }
 
-    function strip(html){
-        var tmp = document.createElement("DIV");
-        tmp.innerHTML = html;
-        var txt = tmp.textContent || tmp.innerText;
-        if (!L.isString(txt)){
-            return html;
-        }
-        txt = txt.replace(/\s+|&nbsp;|&#160;/g, ' ');
-        return txt;
-    }
 
     function isEmpty(html){
         var txt = strip(html);

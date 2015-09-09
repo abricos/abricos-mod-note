@@ -10,6 +10,17 @@ Component.entryPoint = function(NS){
         COMPONENT = this,
         SYS = Brick.mod.sys;
 
+    NS.stripHTML = function(html){
+        var tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        var txt = tmp.textContent || tmp.innerText;
+        if (!Y.Lang.isString(txt)){
+            return html;
+        }
+        txt = txt.replace(/\s+|&nbsp;|&#160;/g, ' ');
+        return txt;
+    };
+
     NS.RecordListWidget = Y.Base.create('recordListWidget', SYS.AppWidget, [], {
         onInitAppWidget: function(err, appInstance){
             this._widgets = [];
@@ -38,8 +49,11 @@ Component.entryPoint = function(NS){
                 });
             }
 
+            var div = Y.Node.create('<div></div>');
+            tp.one('list').insert(div, 0)
+
             var w = new NS.RecordListWidget.RowWidget({
-                srcNode: tp.one('list').insert('<div></div>', 0),
+                srcNode: div,
                 record: record
             });
             ws[ws.length] = w;
@@ -66,14 +80,19 @@ Component.entryPoint = function(NS){
             }
         },
         destructor: function(){
+            this.closeEditor();
         },
         renderRecord: function(){
             var tp = this.template,
                 record = this.get('record'),
-                dConvert = Brick.dateExt.convert;
+                dConvert = Brick.dateExt.convert,
+                message = record.get('message'),
+                isExpand = this.get('isExpand');
+
+            tp.toggleClass('id', 'expandedMode', isExpand);
 
             tp.setHTML({
-                'message': record.get('message'),
+                'message': isExpand ? message : NS.stripHTML(message),
                 'upddate': dConvert(record.get('upddate'), 0, false),
                 'dateline': dConvert(record.get('upddate'), 0, false)
             });
@@ -130,18 +149,29 @@ Component.entryPoint = function(NS){
                     this.renderRecord();
                 }
             }, this);
+        },
+        expand: function(){
+            this.set('isExpand', true);
+            this.renderRecord();
+        },
+        collapse: function(){
+            this.set('isExpand', false);
+            this.renderRecord();
         }
     }, {
         ATTRS: {
             component: {value: COMPONENT},
             templateBlockName: {value: 'row'},
-            record: {}
+            record: {},
+            isExpand: {value: false}
         },
         CLICKS: {
             showEditor: 'showEditor',
             showRemove: 'showRemove',
             save: 'save',
-            cancel: 'closeEditor'
+            cancel: 'closeEditor',
+            expand: 'expand',
+            collapse: 'collapse'
         }
     });
 

@@ -18,8 +18,18 @@
 </div>
 
 <!--{row}-->
-<div class="recordRow panel panel-default">
+<div id="{i#id}" class="recordRow panel panel-default">
     <div class="panel-heading">
+        <button data-click="expand" data-wait="disable"
+                class="btn btn-default btn-xs btn-expand"
+                title="Развернуть">
+            <i class="fa fa-plus-square-o"></i>
+        </button>
+        <button data-click="collapse" data-wait="disable"
+                class="btn btn-default btn-xs btn-collapse"
+                title="Свернуть">
+            <i class="fa fa-minus-square-o"></i>
+        </button>
 
         Создана <span id="{i#dateline}"></span>
         &nbsp;•&nbsp;
@@ -53,13 +63,11 @@
 
     </div>
     <div class="panel-body">
-        <div class="list-group">
-            <div id="{i#viewerPanel}">
-                <div id="{i#message}"></div>
-            </div>
-            <div id="{i#editorPanel}" class="hide">
-                <textarea id="{i#messageEditor}" class="form-control"></textarea>
-            </div>
+        <div id="{i#viewerPanel}">
+            <div id="{i#message}" class="recordViewer"></div>
+        </div>
+        <div id="{i#editorPanel}" class="hide">
+            <textarea id="{i#messageEditor}" class="form-control"></textarea>
         </div>
     </div>
 </div>
