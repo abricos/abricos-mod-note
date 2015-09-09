@@ -7,7 +7,6 @@ Component.requires = {
 Component.entryPoint = function(NS){
 
     var Y = Brick.YUI,
-        L = Y.Lang,
         SYS = Brick.mod.sys;
 
     NS.Note = Y.Base.create('note', SYS.AppModel, [], {

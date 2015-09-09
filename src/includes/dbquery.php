@@ -60,7 +60,7 @@ class NoteQuery {
 				r.message,
 				r.dateline,
 				r.dateedit as upddate
-			FROM ".$db->prefix."nt_record
+			FROM ".$db->prefix."nt_record r
 			WHERE userid=".bkint($userid)." AND deldate=0 
 				".($forPrint > 0 ? " AND noteid=".bkint($noteid)." " : "")."
 				".($recordid > 0 ? " AND recordid=".bkint($recordid)." " : "")."

@@ -1,0 +1,79 @@
+<!--{widget}-->
+<div class="recordList panel panel-default">
+    <div class="panel-heading">
+        Записи
+        <div class="pull-right" data-wait="show">
+            <img src="/images/loading.gif"/>
+        </div>
+
+        <div class="pull-right" data-wait="hide">
+            <a data-click="createRecord" href="#">
+                <i class="fa fa-plus-circle"></i> Добавить запись
+            </a>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div id="{i#list}"></div>
+    </div>
+</div>
+
+<!--{row}-->
+<div class="recordRow panel panel-default">
+    <div class="panel-heading">
+
+        Создана <span id="{i#dateline}"></span>
+        &nbsp;•&nbsp;
+        Изменена <span id="{i#upddate}"></span>
+
+        <div class="pull-right" data-wait="show">
+            <img src="/images/loading.gif"/>
+        </div>
+
+        <div id="{i#editorButtons}" class="btn-group pull-right" data-wait="hide">
+            <button data-click="showEditor" class="btn btn-xs btn-default" type="button"
+                    title="Редактировать">
+                <i class="fa fa-pencil"></i>
+            </button>
+            <button data-click="showRemove" class="btn btn-xs btn-default" type="button"
+                    title="Удалить">
+                <i class="fa fa-trash-o"></i>
+            </button>
+        </div>
+
+        <div id="{i#actionButtons}" class="btn-group hide pull-right" data-wait="hide">
+            <button data-click="save" class="btn btn-xs btn-default" type="button"
+                    title="Сохранить">
+                <i class="fa fa-floppy-o"></i>
+            </button>
+            <button data-click="cancel" class="btn btn-xs btn-default" type="button"
+                    title="Отмена">
+                <i class="fa fa-ban"></i>
+            </button>
+        </div>
+
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+            <div id="{i#viewerPanel}">
+                <div id="{i#message}"></div>
+            </div>
+            <div id="{i#editorPanel}" class="hide">
+                <textarea id="{i#messageEditor}" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--{remove}-->
+<div class="alert alert-danger">
+    Вы действительно хотите удалить запись?
+    <div class="text-center">
+        <img data-wait="show" src="/images/loading.gif"/>
+        <button data-click="remove" data-wait="disable" class="btn btn-danger btn-xs">
+            Удалить
+        </button>
+        <button data-click="cancel" data-wait="disable" class="btn btn-default btn-xs">
+            Отмена
+        </button>
+    </div>
+</div>

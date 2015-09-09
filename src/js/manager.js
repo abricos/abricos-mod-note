@@ -1,7 +1,7 @@
 var Component = new Brick.Component();
 Component.requires = {
     mod: [
-        {name: '{C#MODNAME}', files: ['noteList.js']}
+        {name: '{C#MODNAME}', files: ['noteList.js', 'recordList.js']}
     ]
 };
 Component.entryPoint = function(NS){
@@ -16,6 +16,10 @@ Component.entryPoint = function(NS){
             appInstance.noteList(this.onLoadNoteList, this);
         },
         destructor: function(){
+            if (this.noteListWidget){
+                this.noteListWidget.destroy();
+                this.recordListWidget.destroy();
+            }
         },
         onLoadNoteList: function(){
             this.set('waiting', false);
@@ -27,7 +31,9 @@ Component.entryPoint = function(NS){
             this.noteListWidget = new NS.NoteListWidget({
                 srcNode: tp.gel('noteList')
             });
-
+            this.recordListWidget = new NS.RecordListWidget({
+                srcNode: tp.gel('recordList')
+            });
         }
     }, {
         ATTRS: {

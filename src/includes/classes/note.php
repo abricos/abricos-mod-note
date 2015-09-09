@@ -32,6 +32,10 @@ class Note extends AbricosApplication {
         switch ($d->do){
             case 'recordList';
                 return $this->RecordListToJSON();
+            case 'recordSave';
+                return $this->RecordSaveToJSON($d->record);
+            case 'recordRemove';
+                return $this->RecordRemoveToJSON($d->recordid);
             case 'noteList';
                 return $this->NoteListToJSON();
             case 'noteSave';
@@ -153,6 +157,72 @@ class Note extends AbricosApplication {
         return $this->_cache['RecordList'] = $list;
     }
 
+    public function RecordSaveToJSON($d){
+        $res = $this->RecordSave($d);
+        if (is_integer($res)){
+            $ret = new stdClass();
+            $ret->err = $res;
+            return $ret;
+        }
+        $ret = $this->RecordListToJSON();
+        $ret->recordSave = $res;
+        return $ret;
+    }
+
+    public function RecordSave($d){
+        if (!$this->manager->IsWriteRole()){
+            return 403;
+        }
+        $parser = Abricos::TextParser();
+        $d->id = intval($d->id);
+        $d->noteid = intval($d->noteid);
+        $d->message = $parser->Parser($d->message);
+
+        if ($d->noteid > 0){
+            $note = $this->NoteList()->Get($d->noteid);
+            if (!$note){
+                return 500;
+            }
+        }
+
+        if ($d->id === 0){
+            $d->id = NoteQuery::RecordAppend($this->db, Abricos::$user->id, $d->noteid, $d->message);
+        } else {
+            NoteQuery::RecordUpdate($this->db, Abricos::$user->id, $d->id, $d->message);
+        }
+        $this->ClearCache();
+
+        $ret = new stdClass();
+        $ret->recordid = $d->id;
+        return $ret;
+    }
+
+    public function RecordRemoveToJSON($recordid){
+        $res = $this->RecordRemove($recordid);
+        if (is_integer($res)){
+            $ret = new stdClass();
+            $ret->err = $res;
+            return $ret;
+        }
+        $ret = $this->RecordListToJSON();
+        $ret->recordRemove = $res;
+        return $ret;
+    }
+
+    public function RecordRemove($recordid){
+        if (!$this->manager->IsWriteRole()){
+            return 403;
+        }
+        $recordid = intval($recordid);
+
+        NoteQuery::RecordRemove($this->db, Abricos::$user->id, $recordid);
+
+        $this->ClearCache();
+
+        $ret = new stdClass();
+        $ret->recordid = $recordid;
+        return $ret;
+    }
 }
 
 ?>

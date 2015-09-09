@@ -29,6 +29,7 @@ Component.entryPoint = function(NS){
         },
         REQS: {
             noteList: {
+                attach: 'recordList',
                 attribute: true,
                 type: 'modelList:NoteList'
             },
