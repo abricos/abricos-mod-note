@@ -3,7 +3,7 @@
     <div class="panel-heading">
         Список блокнотов
         <div class="pull-right" data-wait="show">
-            <img src="/images/loading.gif" />
+            <img src="/images/loading.gif"/>
         </div>
     </div>
     <div class="panel-body">
@@ -25,10 +25,28 @@
 </div>
 
 <!--{row}-->
-<div id="{i#row}-{v#id}" data-click="select" data-id="{v#id}" class="list-group-item">
-    {v#title}
-    <div class="{i#editor}-{v#id}"></div>
+<div id="{i#id}-{v#id}" data-click="select" data-id="{v#id}" class="list-group-item">
+    <div id="{i#viewer}-{v#id}">
+        {v#title}&nbsp;
+        {v#rowButtons}
+    </div>
+    <div id="{i#editor}-{v#id}"></div>
 </div>
+
+<!--{rowButtons}-->
+<div id="{i#buttons}-{v#id}" class="btn-group pull-right">
+    <button class="btn btn-default btn-xs"
+            data-click="showEditor" data-id="{v#id}"
+            title="Редактировать">
+        <i class="fa fa-pencil"></i>
+    </button>
+    <button class="btn btn-default btn-xs"
+            data-click="showRemove" data-id="{v#id}"
+            title="Удалить">
+        <i class="fa fa-trash-o"></i>
+    </button>
+</div>
+
 
 <!--{editor}-->
 <div class="input-group">
@@ -44,4 +62,18 @@
     <span class="input-group-addon" data-wait="show">
         <img src="/images/loading.gif"/>
     </span>
+</div>
+
+<!--{remove}-->
+<div class="alert alert-danger">
+    Вы действительно хотите удалить блокнот со всеми его записями?
+    <div class="text-center">
+        <img data-wait="show" src="/images/loading.gif"/>
+        <button data-click="remove" data-wait="disable" class="btn btn-danger btn-xs">
+            Удалить
+        </button>
+        <button data-click="cancel" data-wait="disable" class="btn btn-default btn-xs">
+            Отмена
+        </button>
+    </div>
 </div>

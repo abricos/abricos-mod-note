@@ -103,6 +103,16 @@ class NoteQuery {
 		";
         $db->query_write($sql);
     }
+
+    public static function RecordRemoveByNoteId(Ab_Database $db, $userid, $noteid){
+        $sql = "
+			UPDATE ".$db->prefix."nt_record
+			SET deldate=".TIMENOW."
+			WHERE userid=".bkint($userid)." AND noteid=".bkint($noteid)."
+		";
+        $db->query_write($sql);
+    }
+
 }
 
 ?>

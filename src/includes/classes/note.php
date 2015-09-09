@@ -36,6 +36,8 @@ class Note extends AbricosApplication {
                 return $this->NoteListToJSON();
             case 'noteSave';
                 return $this->NoteSaveToJSON($d->note);
+            case 'noteRemove';
+                return $this->NoteRemoveToJSON($d->noteid);
         }
     }
 
@@ -74,6 +76,34 @@ class Note extends AbricosApplication {
 
         $ret = new stdClass();
         $ret->noteid = $d->id;
+        return $ret;
+    }
+
+    public function NoteRemoveToJSON($noteid){
+        $res = $this->NoteRemove($noteid);
+        if (is_integer($res)){
+            $ret = new stdClass();
+            $ret->err = $res;
+            return $ret;
+        }
+        $ret = $this->NoteListToJSON();
+        $ret->noteRemove = $res;
+        return $ret;
+    }
+
+    public function NoteRemove($noteid){
+        if (!$this->manager->IsWriteRole()){
+            return 403;
+        }
+        $noteid = intval($noteid);
+
+        NoteQuery::RecordRemoveByNoteId($this->db, Abricos::$user->id, $noteid);
+        NoteQuery::NoteRemove($this->db, Abricos::$user->id, $noteid);
+
+        $this->ClearCache();
+
+        $ret = new stdClass();
+        $ret->noteid = $noteid;
         return $ret;
     }
 
