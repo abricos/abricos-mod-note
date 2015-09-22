@@ -126,16 +126,16 @@ Component.entryPoint = function(NS){
 
             tp.toggleView(true, 'actionButtons,editorPanel', 'editorButtons,viewerPanel');
 
-            tp.setValue('messageEditor', record.get('message'));
-
             // hack tinymce width
             messageNode.set('offsetWidth', messageNode.get('offsetWidth'));
 
-            var Editor = Brick.widget.Editor;
-            this._visualEditor = new Editor(tp.gelid('messageEditor'), {
-                'mode': Editor.MODE_VISUAL,
-                'toolbar': Editor.TOOLBAR_MINIMAL,
-                'toolbarExpert': false
+            var Editor = SYS.Editor;
+            this._visualEditor = new Editor({
+                srcNode: tp.append('messageEditor', '<div></div>'),
+                rows: 10,
+                mode: Editor.MODE_VISUAL,
+                toolbar: Editor.TOOLBAR_MINIMAL,
+                content: record.get('message')
             });
         },
         showRemove: function(){
@@ -178,7 +178,7 @@ Component.entryPoint = function(NS){
             }
             var appInstance = this.get('appInstance'),
                 d = this.get('record').toJSON();
-            d['message'] = editor.getContent();
+            d['message'] = editor.get('content');
 
             this.set('waiting', true)
             appInstance.recordSave(d, function(err, result){
