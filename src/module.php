@@ -15,7 +15,7 @@ class NoteModule extends Ab_Module {
     private $_manager;
 
     function __construct(){
-        $this->version = "0.1.3";
+        $this->version = "0.1.4";
         $this->name = "note";
 
         $this->permission = new NotePermission($this);
