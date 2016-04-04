@@ -85,6 +85,7 @@ class NoteManager extends Ab_ModuleManager {
         return array(
             array(
                 "name" => "note",
+                "group" => "personal",
                 "title" => $i18n->Translate('title'),
                 "icon" => "/modules/note/images/note-24.png",
                 "url" => "note/wspace/ws"
