@@ -224,5 +224,3 @@ class Note extends AbricosApplication {
         return $ret;
     }
 }
-
-?>

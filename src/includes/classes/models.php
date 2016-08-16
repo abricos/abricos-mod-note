@@ -34,6 +34,3 @@ class NoteRecord extends AbricosModel {
  */
 class NoteRecordList extends AbricosModelList {
 }
-
-
-?>

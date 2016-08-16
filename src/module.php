@@ -52,7 +52,7 @@ class NoteAction {
 
 class NotePermission extends Ab_UserPermission {
 
-    public function NotePermission(NoteModule $module){
+    public function __construct(NoteModule $module){
         $defRoles = array(
 
             new Ab_UserRole(NoteAction::VIEW, Ab_UserGroup::REGISTERED),
@@ -76,4 +76,3 @@ class NotePermission extends Ab_UserPermission {
 }
 
 Abricos::ModuleRegister(new NoteModule());
-?>

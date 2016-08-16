@@ -93,5 +93,3 @@ class NoteManager extends Ab_ModuleManager {
         );
     }
 }
-
-?>
